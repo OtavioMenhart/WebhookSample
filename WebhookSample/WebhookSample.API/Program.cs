@@ -1,6 +1,4 @@
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using WebhookSample.Data.Context;
+using WebhookSample.API.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,9 +9,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<ClientContext>(options =>
-    options.UseSqlServer(connectionString: builder.Configuration.GetConnectionString("Client"))
-);
+builder.Services.ConfigureServices();
+builder.Services.ConfigureRepositories(builder.Configuration);
 
 var app = builder.Build();
 
