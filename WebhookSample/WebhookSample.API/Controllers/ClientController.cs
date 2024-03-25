@@ -52,23 +52,11 @@ namespace WebhookSample.API.Controllers
         /// <response code="500">Internal Server Error</response>
         [HttpPost]
         [ProducesResponseType(typeof(ClientCreatedResponse), StatusCodes.Status201Created)]
-        [ProducesResponseType(typeof(IEnumerable<ValidationFailure>), StatusCodes.Status422UnprocessableEntity)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         public async Task<IActionResult> Post([FromBody] CreateClientRequest newclient)
         {
-            try
-            {
-                var clientAdded = await _clientService.CreateClient(newclient);
-                return StatusCode(StatusCodes.Status201Created, clientAdded);
-            }
-            catch (ValidationException ex)
-            {
-                return UnprocessableEntity(ex.Errors);
-            }
-            catch (Exception)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError);
-            }
+            var clientAdded = await _clientService.CreateClient(newclient);
+            return StatusCode(StatusCodes.Status201Created, clientAdded);
         }
 
         // PUT api/<ClientController>/5

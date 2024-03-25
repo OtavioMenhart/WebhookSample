@@ -1,11 +1,12 @@
 using System.Reflection;
 using WebhookSample.API.Extensions;
+using WebhookSample.API.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(opt => opt.Filters.Add(typeof(GlobalExceptionFilters)));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(opt =>
