@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
+using WebhookSample.API.Consumer;
 using WebhookSample.Data.Context;
 using WebhookSample.Data.Repositories.Clients;
 using WebhookSample.Domain.Interfaces.Repositories.Clients;
@@ -42,7 +43,12 @@ namespace WebhookSample.API.Extensions
                         hostConfig.Username(configRabbit.GetValue<string>("Username"));
                         hostConfig.Password(configRabbit.GetValue<string>("Password"));
                     });
+                    rabbitMqConfig.ReceiveEndpoint("clients", c =>
+                    {
+                        c.Consumer<EventConsumer>();
+                    });
                 });
+
             });
         }
     }
