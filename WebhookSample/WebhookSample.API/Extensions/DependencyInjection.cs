@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using WebhookSample.Data.Context;
 using WebhookSample.Data.Repositories.Clients;
@@ -17,6 +18,7 @@ namespace WebhookSample.API.Extensions
             services.AddAutoMapper(typeof(Mappers));
 
             services.AddTransient<IClientService, ClientService>();
+            services.AddTransient<IEventService, EventService>();
         }
 
         public static void ConfigureRepositories(this IServiceCollection services, IConfiguration configuration)
@@ -26,6 +28,22 @@ namespace WebhookSample.API.Extensions
             );
 
             services.AddScoped<IClientRepository, ClientRepository>();
+        }
+
+        public static void ConfigureRabbit(this IServiceCollection services, IConfiguration configuration)
+        {
+            var configRabbit = configuration.GetSection("RabbitMQ");
+            services.AddMassTransit(cfg =>
+            {
+                cfg.UsingRabbitMq((context, rabbitMqConfig) =>
+                {
+                    rabbitMqConfig.Host(configRabbit.GetValue<string>("Host"), hostConfig =>
+                    {
+                        hostConfig.Username(configRabbit.GetValue<string>("Username"));
+                        hostConfig.Password(configRabbit.GetValue<string>("Password"));
+                    });
+                });
+            });
         }
     }
 }

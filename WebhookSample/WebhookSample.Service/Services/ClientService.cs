@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using FluentValidation;
 using WebhookSample.Domain.Entities;
+using WebhookSample.Domain.Enums;
 using WebhookSample.Domain.Interfaces.Repositories.Clients;
 using WebhookSample.Domain.Interfaces.Services;
+using WebhookSample.Domain.Requests;
 using WebhookSample.Domain.Requests.Clients;
 using WebhookSample.Domain.Responses.Clients;
 
@@ -13,12 +15,14 @@ namespace WebhookSample.Service.Services
         private readonly IValidator<BaseClientRequest> _clientValidator;
         private readonly IMapper _mapper;
         private readonly IClientRepository _clientRepository;
+        private readonly IEventService _eventService;
 
-        public ClientService(IValidator<BaseClientRequest> clientValidator, IMapper mapper, IClientRepository clientRepository)
+        public ClientService(IValidator<BaseClientRequest> clientValidator, IMapper mapper, IClientRepository clientRepository, IEventService eventService)
         {
             _clientValidator = clientValidator;
             _mapper = mapper;
             _clientRepository = clientRepository;
+            _eventService = eventService;
         }
 
         public async Task<ClientCreatedResponse> CreateClient(CreateClientRequest newClient)
@@ -30,6 +34,7 @@ namespace WebhookSample.Service.Services
             }
             var client = _mapper.Map<Client>(newClient);
             var clientAdded = await _clientRepository.InsertAsync(client);
+            _eventService.SendEventNotification(new EventNotification(EventName.CLIENT_CREATED, clientAdded));
             return _mapper.Map<ClientCreatedResponse>(clientAdded);
         }
     }

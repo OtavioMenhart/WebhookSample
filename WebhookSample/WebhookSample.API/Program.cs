@@ -18,6 +18,7 @@ builder.Services.AddSwaggerGen(opt =>
 
 builder.Services.ConfigureServices();
 builder.Services.ConfigureRepositories(builder.Configuration);
+builder.Services.ConfigureRabbit(builder.Configuration);
 
 var app = builder.Build();
 
