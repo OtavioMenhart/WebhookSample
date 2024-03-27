@@ -1,11 +1,13 @@
 ﻿using FluentValidation;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
+using Refit;
 using WebhookSample.API.Consumer;
 using WebhookSample.Data.Context;
 using WebhookSample.Data.Repositories.Clients;
 using WebhookSample.Domain.Interfaces.Repositories.Clients;
 using WebhookSample.Domain.Interfaces.Services;
+using WebhookSample.Service.External;
 using WebhookSample.Service.Services;
 using WebhookSample.Service.Validators;
 
@@ -22,8 +24,19 @@ namespace WebhookSample.API.Extensions
             services.AddTransient<IEventService, EventService>();
         }
 
+        private static void AddRefit(IServiceCollection services, IConfiguration configuration)
+        {
+            string baseUrl = configuration.GetValue<string>("BaseWebhookUrl");
+            services.AddRefitClient<IApiClientService>().ConfigureHttpClient(c =>
+            {
+                c.BaseAddress = new Uri(baseUrl);
+            });
+        }
+
         public static void ConfigureRepositories(this IServiceCollection services, IConfiguration configuration)
         {
+            AddRefit(services, configuration);
+
             services.AddDbContext<ClientContext>(options =>
                 options.UseSqlServer(connectionString: configuration.GetConnectionString("Client"))
             );
@@ -36,6 +49,8 @@ namespace WebhookSample.API.Extensions
             var configRabbit = configuration.GetSection("RabbitMQ");
             services.AddMassTransit(cfg =>
             {
+                cfg.AddConsumer<EventConsumer>();
+
                 cfg.UsingRabbitMq((context, rabbitMqConfig) =>
                 {
                     rabbitMqConfig.Host(configRabbit.GetValue<string>("Host"), hostConfig =>
@@ -45,7 +60,7 @@ namespace WebhookSample.API.Extensions
                     });
                     rabbitMqConfig.ReceiveEndpoint("clients", c =>
                     {
-                        c.Consumer<EventConsumer>();
+                        c.ConfigureConsumer<EventConsumer>(context);
                     });
                 });
 
