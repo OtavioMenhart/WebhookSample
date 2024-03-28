@@ -36,11 +36,18 @@ namespace WebhookSample.API.Controllers
             return NoContent();
         }
 
-        // GET api/<ClientController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        /// <summary>
+        /// Get client by id
+        /// </summary>
+        /// <returns>Client</returns>
+        [HttpGet]
+        [ProducesResponseType(typeof(GetClientResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Route("{id}", Name = "GetById")]
+        public async Task<IActionResult> GetById(Guid id)
         {
-            return "value";
+            var client = await _clientService.GetClientById(id);
+            return Ok(client);
         }
 
         /// <summary>

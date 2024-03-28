@@ -32,6 +32,11 @@ namespace WebhookSample.API.Filters
                         message = validationException.Errors.Select(x => x.ErrorMessage);
                         break;
 
+                    case bool _ when exception is KeyNotFoundException:
+                        statusCode = (int)HttpStatusCode.NotFound;
+                        message = exception.Message;
+                        break;
+
                     default:
                         statusCode = (int)HttpStatusCode.InternalServerError;
                         message = "An unexpected error happened";

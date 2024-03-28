@@ -42,5 +42,14 @@ namespace WebhookSample.Service.Services
             var clients = await _clientRepository.GetAll();
             return _mapper.Map<IEnumerable<GetClientResponse>>(clients);
         }
+
+        public async Task<GetClientResponse> GetClientById(Guid id)
+        {
+            var client = await _clientRepository.Get(x => x.Id == id);
+            if (client == null)
+                throw new KeyNotFoundException($"Client not found");
+
+            return _mapper.Map<GetClientResponse>(client);
+        }
     }
 }

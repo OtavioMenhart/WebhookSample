@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 using WebhookSample.Data.Context;
 using WebhookSample.Domain.Interfaces.Repositories;
 
@@ -15,9 +16,14 @@ namespace WebhookSample.Data.Repositories
             _dataSet = _dbContext.Set<T>();
         }
 
+        public async Task<T> Get(Expression<Func<T, bool>> predicate)
+        {
+            return await _dataSet.SingleOrDefaultAsync(predicate);
+        }
+
         public async Task<IEnumerable<T>> GetAll()
         {
-            return await _dbContext.Set<T>().ToListAsync();
+            return await _dataSet.ToListAsync();
         }
 
         public async Task<T> InsertAsync(T item)
