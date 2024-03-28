@@ -1,7 +1,5 @@
 ﻿using MassTransit;
-using Refit;
 using WebhookSample.Domain.Requests;
-using WebhookSample.Domain.Responses;
 using WebhookSample.Service.External;
 
 namespace WebhookSample.API.Consumer

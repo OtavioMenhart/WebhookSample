@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using WebhookSample.Data.Context;
 using WebhookSample.Domain.Entities;
 using WebhookSample.Domain.Interfaces.Repositories;
 
@@ -6,10 +7,10 @@ namespace WebhookSample.Data.Repositories
 {
     public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
     {
-        protected readonly DbContext _dbContext;
+        protected readonly ClientContext _dbContext;
         private DbSet<T> _dataSet;
 
-        public BaseRepository(DbContext dbContext)
+        public BaseRepository(ClientContext dbContext)
         {
             _dbContext = dbContext;
             _dataSet = _dbContext.Set<T>();

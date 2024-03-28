@@ -2,10 +2,11 @@
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Refit;
+using System.Text.Json;
 using WebhookSample.API.Consumer;
 using WebhookSample.Data.Context;
-using WebhookSample.Data.Repositories.Clients;
-using WebhookSample.Domain.Interfaces.Repositories.Clients;
+using WebhookSample.Data.Repositories;
+using WebhookSample.Domain.Interfaces.Repositories;
 using WebhookSample.Domain.Interfaces.Services;
 using WebhookSample.Service.External;
 using WebhookSample.Service.Services;
@@ -41,7 +42,7 @@ namespace WebhookSample.API.Extensions
                 options.UseSqlServer(connectionString: configuration.GetConnectionString("Client"))
             );
 
-            services.AddScoped<IClientRepository, ClientRepository>();
+            services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
         }
 
         public static void ConfigureRabbit(this IServiceCollection services, IConfiguration configuration)
