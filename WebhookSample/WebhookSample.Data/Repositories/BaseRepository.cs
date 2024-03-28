@@ -5,7 +5,7 @@ using WebhookSample.Domain.Interfaces.Repositories;
 
 namespace WebhookSample.Data.Repositories
 {
-    public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
+    public class BaseRepository<T> : IBaseRepository<T> where T : class
     {
         protected readonly ClientContext _dbContext;
         private DbSet<T> _dataSet;

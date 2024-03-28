@@ -33,7 +33,7 @@ namespace WebhookSample.Service.Services
 
             var client = _mapper.Map<Client>(newClient);
             var clientAdded = await _clientRepository.InsertAsync(client);
-            _eventService.SendEventNotification(new EventNotification(EventName.CLIENT_CREATED, clientAdded));
+            _eventService.SendEventNotification(new EventNotification(EventName.CLIENT_CREATED.ToString(), clientAdded));
             return _mapper.Map<ClientCreatedResponse>(clientAdded);
         }
     }
