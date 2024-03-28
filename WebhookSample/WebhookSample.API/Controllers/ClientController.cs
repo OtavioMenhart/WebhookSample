@@ -20,11 +20,20 @@ namespace WebhookSample.API.Controllers
             _clientService = clientService;
         }
 
-        // GET: api/<ClientController>
+        /// <summary>
+        /// Get all clients
+        /// </summary>
+        /// <returns>List of all clients</returns>
         [HttpGet]
-        public IEnumerable<string> Get()
+        [ProducesResponseType(typeof(IEnumerable<GetClientResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> Get()
         {
-            return new string[] { "value1", "value2" };
+            var clients = await _clientService.GetAllClients();
+            if(clients.Any())
+                return Ok(clients);
+
+            return NoContent();
         }
 
         // GET api/<ClientController>/5
@@ -47,9 +56,6 @@ namespace WebhookSample.API.Controllers
         /// </remarks>
         /// <param name="newclient">New client information</param>
         /// <returns>New client added</returns>
-        /// <response code="201">Created</response>
-        /// <response code="422">Unprocessable Entity</response>
-        /// <response code="500">Internal Server Error</response>
         [HttpPost]
         [ProducesResponseType(typeof(ClientCreatedResponse), StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]

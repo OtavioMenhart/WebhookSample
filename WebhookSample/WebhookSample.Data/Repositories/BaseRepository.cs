@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WebhookSample.Data.Context;
-using WebhookSample.Domain.Entities;
 using WebhookSample.Domain.Interfaces.Repositories;
 
 namespace WebhookSample.Data.Repositories
@@ -14,6 +13,11 @@ namespace WebhookSample.Data.Repositories
         {
             _dbContext = dbContext;
             _dataSet = _dbContext.Set<T>();
+        }
+
+        public async Task<IEnumerable<T>> GetAll()
+        {
+            return await _dbContext.Set<T>().ToListAsync();
         }
 
         public async Task<T> InsertAsync(T item)

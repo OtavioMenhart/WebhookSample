@@ -36,5 +36,11 @@ namespace WebhookSample.Service.Services
             _eventService.SendEventNotification(new EventNotification(EventName.CLIENT_CREATED.ToString(), clientAdded));
             return _mapper.Map<ClientCreatedResponse>(clientAdded);
         }
+
+        public async Task<IEnumerable<GetClientResponse>> GetAllClients()
+        {
+            var clients = await _clientRepository.GetAll();
+            return _mapper.Map<IEnumerable<GetClientResponse>>(clients);
+        }
     }
 }
