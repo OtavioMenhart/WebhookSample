@@ -9,14 +9,14 @@ namespace WebhookSample.API.Extensions
     {
         public Mappers()
         {
-            CreateClientMapper();
+            ClientsMapper();
         }
 
-        private void CreateClientMapper()
+        private void ClientsMapper()
         {
             CreateMap<CreateClientRequest, Client>().ReverseMap();
             CreateMap<ClientCreatedResponse, Client>().ReverseMap();
-            CreateMap<GetClientResponse, Client>().ReverseMap();            
+            CreateMap<GetClientResponse, Client>().ReverseMap();
         }
     }
 }

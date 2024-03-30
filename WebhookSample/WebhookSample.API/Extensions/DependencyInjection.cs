@@ -2,7 +2,6 @@
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Refit;
-using System.Text.Json;
 using WebhookSample.API.Consumer;
 using WebhookSample.Data.Context;
 using WebhookSample.Data.Repositories;

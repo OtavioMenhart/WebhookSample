@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using WebhookSample.Domain.Enums;
 
 namespace WebhookSample.Domain.Entities
 {
@@ -28,7 +27,7 @@ namespace WebhookSample.Domain.Entities
 
         public WebhookEventStatus()
         {
-            
+
         }
 
         public WebhookEventStatus(string eventName, string context, string message, bool success = true)

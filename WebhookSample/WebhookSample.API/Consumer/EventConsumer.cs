@@ -26,8 +26,8 @@ namespace WebhookSample.API.Consumer
 
             var webhookStatus = new WebhookEventStatus(
                 message.EventName,
-                message.EventName.Split("_")[0], 
-                JsonConvert.SerializeObject(message.Info.ToString().Replace("\r\n", "").Replace("      ", "")), 
+                message.EventName.Split("_")[0],
+                JsonConvert.SerializeObject(message.Info.ToString().Replace("\r\n", "").Replace("      ", "")),
                 result.Result.IsSuccessStatusCode);
             var statusResult = _webhookEventStatusRepository.InsertAsync(webhookStatus);
             statusResult.Wait();

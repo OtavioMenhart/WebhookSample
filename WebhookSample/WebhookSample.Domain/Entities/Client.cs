@@ -17,7 +17,7 @@ namespace WebhookSample.Domain.Entities
         [Required]
         [DataType(DataType.EmailAddress)]
         [MaxLength(50)]
-        public  string Email { get; set; }
+        public string Email { get; set; }
 
         [JsonIgnore]
         public ICollection<ClientHistory> Histories { get; set; }

@@ -1,6 +1,4 @@
-﻿using FluentValidation;
-using FluentValidation.Results;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using WebhookSample.Domain.Interfaces.Services;
 using WebhookSample.Domain.Requests.Clients;
 using WebhookSample.Domain.Responses.Clients;
@@ -30,7 +28,7 @@ namespace WebhookSample.API.Controllers
         public async Task<IActionResult> Get()
         {
             var clients = await _clientService.GetAllClients();
-            if(clients.Any())
+            if (clients.Any())
                 return Ok(clients);
 
             return NoContent();

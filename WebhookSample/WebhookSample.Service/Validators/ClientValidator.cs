@@ -5,7 +5,7 @@ namespace WebhookSample.Service.Validators
 {
     public class ClientValidator : AbstractValidator<BaseClientRequest>
     {
-        public ClientValidator() 
+        public ClientValidator()
         {
             RuleFor(c => c.Name).NotEmpty().WithMessage("Name is required");
             RuleFor(c => c.BirthDate).NotEmpty().NotEqual(new DateOnly()).WithMessage("Birth date is required");
