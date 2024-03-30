@@ -31,9 +31,12 @@ namespace WebhookSample.Service.Services
             if (!validationResult.IsValid)
                 throw new ValidationException(validationResult.Errors);
 
+            EventName clientEvent = EventName.CLIENT_CREATED;
             var client = _mapper.Map<Client>(newClient);
+            client.AddHistory(client, clientEvent);
             var clientAdded = await _clientRepository.InsertAsync(client);
-            _eventService.SendEventNotification(new EventNotification(EventName.CLIENT_CREATED.ToString(), clientAdded));
+
+            await _eventService.SendEventNotification(new EventNotification(clientEvent.ToString(), clientAdded));
             return _mapper.Map<ClientCreatedResponse>(clientAdded);
         }
 

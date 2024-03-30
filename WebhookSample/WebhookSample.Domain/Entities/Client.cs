@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
+using WebhookSample.Domain.Enums;
 
 namespace WebhookSample.Domain.Entities
 {
@@ -16,5 +18,16 @@ namespace WebhookSample.Domain.Entities
         [DataType(DataType.EmailAddress)]
         [MaxLength(50)]
         public  string Email { get; set; }
+
+        [JsonIgnore]
+        public ICollection<ClientHistory> Histories { get; set; }
+
+        public void AddHistory(Client clientToAddHistory, EventName eventName)
+        {
+            Histories = new List<ClientHistory>
+            {
+                new ClientHistory(clientToAddHistory, eventName)
+            };
+        }
     }
 }
