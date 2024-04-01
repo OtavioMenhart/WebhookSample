@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System.Net;
+using WebhookSample.Domain.Responses;
 
 namespace WebhookSample.API.Filters
 {
@@ -11,6 +12,7 @@ namespace WebhookSample.API.Filters
         {
             if (!context.ExceptionHandled)
             {
+                var response = new ErrorResponse();
                 var exception = context.Exception;
                 int statusCode;
                 object message;
@@ -42,9 +44,10 @@ namespace WebhookSample.API.Filters
                         message = "An unexpected error happened";
                         break;
                 }
+                response.AddErrorResponse(statusCode, new List<object> { message });
                 // _logger.LogError($"GlobalExceptionFilter: Error in {context.ActionDescriptor.DisplayName}. {exception.Message}. Stack Trace: {exception.StackTrace}");
                 // Custom Exception message to be returned to the UI
-                context.Result = new ObjectResult(message) { StatusCode = statusCode };
+                context.Result = new ObjectResult(response) { StatusCode = response.StatusCode };
             }
         }
     }
