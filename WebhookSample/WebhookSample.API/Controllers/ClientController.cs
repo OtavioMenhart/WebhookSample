@@ -76,10 +76,19 @@ namespace WebhookSample.API.Controllers
         {
         }
 
-        // DELETE api/<ClientController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        /// <summary>
+        /// Change client status
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="status"></param>
+        /// <returns>Client updated</returns>
+        [HttpPatch("{id}/{status}:ChangeStatus")]
+        [ProducesResponseType(typeof(ClientUpdatedResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Inactivate(Guid id, bool status)
         {
+            var clientUpdated = await _clientService.ChangeClientStatus(id, status);
+            return Ok(clientUpdated);
         }
     }
 }

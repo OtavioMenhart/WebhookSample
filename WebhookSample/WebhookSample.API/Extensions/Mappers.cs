@@ -16,6 +16,7 @@ namespace WebhookSample.API.Extensions
         {
             CreateMap<CreateClientRequest, Client>().ReverseMap();
             CreateMap<ClientCreatedResponse, Client>().ReverseMap();
+            CreateMap<ClientUpdatedResponse, Client>().ReverseMap();            
             CreateMap<GetClientResponse, Client>().ReverseMap();
         }
     }

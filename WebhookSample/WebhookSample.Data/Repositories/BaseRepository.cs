@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using System.Reflection;
 using WebhookSample.Data.Context;
 using WebhookSample.Domain.Interfaces.Repositories;
 
@@ -31,6 +32,12 @@ namespace WebhookSample.Data.Repositories
             await _dataSet.AddAsync(item);
             await _dbContext.SaveChangesAsync();
             return item;
+        }
+
+        public async Task Update(T entity)
+        {
+            _dataSet.Update(entity);
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

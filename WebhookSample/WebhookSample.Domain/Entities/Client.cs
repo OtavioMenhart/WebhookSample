@@ -33,5 +33,11 @@ namespace WebhookSample.Domain.Entities
                 new ClientHistory(clientToAddHistory, eventName)
             };
         }
+
+        public void ChangeStatus(Client client, bool status)
+        {
+            client.Status = status ? "ACTIVE" : "INACTIVE";
+            client.UpdatedAt = DateTime.UtcNow;
+        }
     }
 }

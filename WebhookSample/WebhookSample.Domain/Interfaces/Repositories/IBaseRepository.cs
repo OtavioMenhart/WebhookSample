@@ -7,5 +7,6 @@ namespace WebhookSample.Domain.Interfaces.Repositories
         Task<T> InsertAsync(T item);
         Task<IEnumerable<T>> GetAll();
         Task<T> Get(Expression<Func<T, bool>> predicate);
+        Task Update(T entity);
     }
 }

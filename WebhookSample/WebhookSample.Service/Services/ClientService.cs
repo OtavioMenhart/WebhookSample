@@ -15,14 +15,39 @@ namespace WebhookSample.Service.Services
         private readonly IValidator<BaseClientRequest> _clientValidator;
         private readonly IMapper _mapper;
         private readonly IBaseRepository<Client> _clientRepository;
+        private readonly IBaseRepository<ClientHistory> _clientHistoryRepository;
         private readonly IEventService _eventService;
 
-        public ClientService(IValidator<BaseClientRequest> clientValidator, IMapper mapper, IBaseRepository<Client> clientRepository, IEventService eventService)
+        public ClientService(IValidator<BaseClientRequest> clientValidator, 
+            IMapper mapper, 
+            IBaseRepository<Client> clientRepository, 
+            IEventService eventService, 
+            IBaseRepository<ClientHistory> clientHistoryRepository)
         {
             _clientValidator = clientValidator;
             _mapper = mapper;
             _clientRepository = clientRepository;
             _eventService = eventService;
+            _clientHistoryRepository = clientHistoryRepository;
+        }
+
+        public async Task<ClientUpdatedResponse> ChangeClientStatus(Guid id, bool status)
+        {
+            var client = await _clientRepository.Get(x => x.Id == id);
+            if (client == null)
+                throw new KeyNotFoundException($"Client not found");
+
+            EventName clientEvent = EventName.CLIENT_UPDATED;
+
+            client.ChangeStatus(client, status);
+            await _clientRepository.Update(client);
+
+            client.AddHistory(client, clientEvent);
+            await _clientHistoryRepository.InsertAsync(client.Histories.FirstOrDefault());
+
+            await _eventService.SendEventNotification(new EventNotification(clientEvent.ToString(), client));
+
+            return _mapper.Map<ClientUpdatedResponse>(client);
         }
 
         public async Task<ClientCreatedResponse> CreateClient(CreateClientRequest newClient)

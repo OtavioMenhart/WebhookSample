@@ -43,6 +43,7 @@ namespace WebhookSample.Domain.Entities
             BirthDate = client.BirthDate;
             Email = client.Email;
             UpdatedAt = client.UpdatedAt;
+            Status = client.Status;
         }
 
     }
