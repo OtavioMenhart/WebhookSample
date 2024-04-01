@@ -19,6 +19,10 @@ namespace WebhookSample.Domain.Entities
         [MaxLength(50)]
         public string Email { get; set; }
 
+        [Required]
+        [MaxLength(10)]
+        public string Status { get; private set; } = "ACTIVE";
+
         [JsonIgnore]
         public ICollection<ClientHistory> Histories { get; set; }
 

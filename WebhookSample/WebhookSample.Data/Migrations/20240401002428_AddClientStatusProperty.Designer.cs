@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebhookSample.Data.Context;
 
@@ -11,9 +12,11 @@ using WebhookSample.Data.Context;
 namespace WebhookSample.Data.Migrations
 {
     [DbContext(typeof(ClientContext))]
-    partial class ClientContextModelSnapshot : ModelSnapshot
+    [Migration("20240401002428_AddClientStatusProperty")]
+    partial class AddClientStatusProperty
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -54,7 +57,7 @@ namespace WebhookSample.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Clients", (string)null);
+                    b.ToTable("Clients");
                 });
 
             modelBuilder.Entity("WebhookSample.Domain.Entities.ClientHistory", b =>
@@ -99,7 +102,7 @@ namespace WebhookSample.Data.Migrations
 
                     b.HasIndex("ClientId");
 
-                    b.ToTable("ClientHistories", (string)null);
+                    b.ToTable("ClientHistories");
                 });
 
             modelBuilder.Entity("WebhookSample.Domain.Entities.WebhookEventStatus", b =>
@@ -132,7 +135,7 @@ namespace WebhookSample.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("WebhookStatus", (string)null);
+                    b.ToTable("WebhookStatus");
                 });
 
             modelBuilder.Entity("WebhookSample.Domain.Entities.ClientHistory", b =>

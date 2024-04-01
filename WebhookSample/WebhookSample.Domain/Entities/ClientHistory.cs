@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using WebhookSample.Domain.Enums;
 
 namespace WebhookSample.Domain.Entities
@@ -25,6 +26,10 @@ namespace WebhookSample.Domain.Entities
         [DataType(DataType.EmailAddress)]
         [MaxLength(50)]
         public string Email { get; private set; }
+
+        [Required]
+        [MaxLength(10)]
+        public string Status { get; private set; } = "ACTIVE";
 
         public ClientHistory()
         {
