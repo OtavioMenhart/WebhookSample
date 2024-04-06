@@ -1,9 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebhookSample.Domain.Interfaces.Services;
 using WebhookSample.Domain.Requests.Clients;
+using WebhookSample.Domain.Responses;
 using WebhookSample.Domain.Responses.Clients;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace WebhookSample.API.Controllers
 {
@@ -24,7 +23,8 @@ namespace WebhookSample.API.Controllers
         /// <returns>List of all clients</returns>
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<GetClientResponse>), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Get()
         {
             var clients = await _clientService.GetAllClients();
@@ -40,7 +40,8 @@ namespace WebhookSample.API.Controllers
         /// <returns>Client</returns>
         [HttpGet]
         [ProducesResponseType(typeof(GetClientResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status500InternalServerError)]
         [Route("{id}", Name = "GetById")]
         public async Task<IActionResult> GetById(Guid id)
         {
@@ -63,17 +64,29 @@ namespace WebhookSample.API.Controllers
         /// <returns>New client added</returns>
         [HttpPost]
         [ProducesResponseType(typeof(ClientCreatedResponse), StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Post([FromBody] CreateClientRequest newclient)
         {
             var clientAdded = await _clientService.CreateClient(newclient);
             return StatusCode(StatusCodes.Status201Created, clientAdded);
         }
 
-        // PUT api/<ClientController>/5
+        /// <summary>
+        /// Update client infos
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="client"></param>
+        /// <returns>Client updated</returns>
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [ProducesResponseType(typeof(ClientUpdatedResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> Put(Guid id, [FromBody] UpdateClientRequest client)
         {
+            var clientUpdated = await _clientService.UpdateClientInformations(id, client);
+            return Ok(clientUpdated);
         }
 
         /// <summary>
@@ -84,8 +97,9 @@ namespace WebhookSample.API.Controllers
         /// <returns>Client updated</returns>
         [HttpPatch("{id}/{status}:ChangeStatus")]
         [ProducesResponseType(typeof(ClientUpdatedResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Inactivate(Guid id, bool status)
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> ChangeStatus(Guid id, bool status)
         {
             var clientUpdated = await _clientService.ChangeClientStatus(id, status);
             return Ok(clientUpdated);

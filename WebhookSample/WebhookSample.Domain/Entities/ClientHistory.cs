@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using WebhookSample.Domain.Enums;
 
 namespace WebhookSample.Domain.Entities
@@ -31,7 +30,7 @@ namespace WebhookSample.Domain.Entities
         [MaxLength(10)]
         public string Status { get; private set; } = "ACTIVE";
 
-        public ClientHistory()
+        private ClientHistory()
         {
         }
 

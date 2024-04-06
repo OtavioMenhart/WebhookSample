@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FluentValidation;
+using FluentValidation.Results;
 using WebhookSample.Domain.Entities;
 using WebhookSample.Domain.Enums;
 using WebhookSample.Domain.Interfaces.Repositories;
@@ -33,11 +34,9 @@ namespace WebhookSample.Service.Services
 
         public async Task<ClientUpdatedResponse> ChangeClientStatus(Guid id, bool status)
         {
-            var client = await _clientRepository.Get(x => x.Id == id);
-            if (client == null)
-                throw new KeyNotFoundException($"Client not found");
+            var client = await SearchClient(id);
 
-            EventName clientEvent = EventName.CLIENT_UPDATED;
+            EventName clientEvent = status ? EventName.CLIENT_ACTIVE : EventName.CLIENT_INACTIVE;
 
             client.ChangeStatus(client, status);
             await _clientRepository.Update(client);
@@ -52,9 +51,7 @@ namespace WebhookSample.Service.Services
 
         public async Task<ClientCreatedResponse> CreateClient(CreateClientRequest newClient)
         {
-            var validationResult = await _clientValidator.ValidateAsync(newClient);
-            if (!validationResult.IsValid)
-                throw new ValidationException(validationResult.Errors);
+            await ValidateClientRequest(newClient);
 
             EventName clientEvent = EventName.CLIENT_CREATED;
             var client = _mapper.Map<Client>(newClient);
@@ -63,7 +60,7 @@ namespace WebhookSample.Service.Services
 
             await _eventService.SendEventNotification(new EventNotification(clientEvent.ToString(), clientAdded));
             return _mapper.Map<ClientCreatedResponse>(clientAdded);
-        }
+        }        
 
         public async Task<IEnumerable<GetClientResponse>> GetAllClients()
         {
@@ -73,11 +70,47 @@ namespace WebhookSample.Service.Services
 
         public async Task<GetClientResponse> GetClientById(Guid id)
         {
+            var client = await SearchClient(id);
+            return _mapper.Map<GetClientResponse>(client);
+        }
+
+        public async Task<ClientUpdatedResponse> UpdateClientInformations(Guid id, UpdateClientRequest request)
+        {
+            var client = await SearchClient(id);
+
+            if (client.Status == "INACTIVE")
+                throw new ValidationException(new List<ValidationFailure> 
+                { 
+                    new ValidationFailure("Status", "You can't update an inactive client, please active this client first") 
+                });
+
+            await ValidateClientRequest(request);
+
+            client.UpdateInfos(client, request);
+            await _clientRepository.Update(client);
+
+            EventName clientEvent = EventName.CLIENT_UPDATED;
+            client.AddHistory(client, clientEvent);
+            await _clientHistoryRepository.InsertAsync(client.Histories.FirstOrDefault());
+
+            await _eventService.SendEventNotification(new EventNotification(clientEvent.ToString(), client));
+
+            return _mapper.Map<ClientUpdatedResponse>(client);
+        }
+
+        private async Task<Client> SearchClient(Guid id)
+        {
             var client = await _clientRepository.Get(x => x.Id == id);
             if (client == null)
                 throw new KeyNotFoundException($"Client not found");
+            return client;
+        }
 
-            return _mapper.Map<GetClientResponse>(client);
+        private async Task ValidateClientRequest(BaseClientRequest newClient)
+        {
+            var validationResult = await _clientValidator.ValidateAsync(newClient);
+            if (!validationResult.IsValid)
+                throw new ValidationException(validationResult.Errors);
         }
     }
 }

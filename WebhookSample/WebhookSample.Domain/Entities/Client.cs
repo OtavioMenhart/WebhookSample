@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using WebhookSample.Domain.Enums;
+using WebhookSample.Domain.Requests.Clients;
 
 namespace WebhookSample.Domain.Entities
 {
@@ -8,16 +9,16 @@ namespace WebhookSample.Domain.Entities
     {
         [Required]
         [MaxLength(100)]
-        public string Name { get; set; }
+        public string Name { get; private set; }
 
         [Required]
         [DataType(DataType.Date)]
-        public DateOnly BirthDate { get; set; }
+        public DateOnly BirthDate { get; private set; }
 
         [Required]
         [DataType(DataType.EmailAddress)]
         [MaxLength(50)]
-        public string Email { get; set; }
+        public string Email { get; private set; }
 
         [Required]
         [MaxLength(10)]
@@ -38,6 +39,14 @@ namespace WebhookSample.Domain.Entities
         {
             client.Status = status ? "ACTIVE" : "INACTIVE";
             client.UpdatedAt = DateTime.UtcNow;
+        }
+
+        public void UpdateInfos(Client client, UpdateClientRequest request)
+        {
+            client.UpdatedAt = DateTime.UtcNow;
+            client.BirthDate = request.BirthDate;
+            client.Email = request.Email;
+            client.Name = request.Name;
         }
     }
 }

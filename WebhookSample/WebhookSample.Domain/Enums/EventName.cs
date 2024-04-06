@@ -4,6 +4,7 @@
     {
         CLIENT_CREATED,
         CLIENT_UPDATED,
-        CLIENT_DELETED
+        CLIENT_ACTIVE,
+        CLIENT_INACTIVE
     }
 }

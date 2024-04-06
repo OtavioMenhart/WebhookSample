@@ -9,5 +9,6 @@ namespace WebhookSample.Domain.Interfaces.Services
         Task<IEnumerable<GetClientResponse>> GetAllClients();
         Task<GetClientResponse> GetClientById(Guid id);
         Task<ClientUpdatedResponse> ChangeClientStatus(Guid id, bool status);
+        Task<ClientUpdatedResponse> UpdateClientInformations(Guid id, UpdateClientRequest request);
     }
 }

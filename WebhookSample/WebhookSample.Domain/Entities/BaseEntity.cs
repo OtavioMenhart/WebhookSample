@@ -5,12 +5,12 @@ namespace WebhookSample.Domain.Entities
     public class BaseEntity
     {
         [Key]
-        public Guid Id { get; set; }
+        public Guid Id { get; private set; }
 
         [Required]
-        public DateTime CreatedAt { get; set; }
+        public DateTime CreatedAt { get; private set; }
 
-        public DateTime? UpdatedAt { get; set; }
+        public DateTime? UpdatedAt { get; protected set; }
 
         public BaseEntity()
         {
