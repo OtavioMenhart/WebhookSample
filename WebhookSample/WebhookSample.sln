@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34714.143
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebhookSample.API", "WebhookSample.API\WebhookSample.API.csproj", "{0E90C02C-0FD2-458A-929C-8C8BAE285CBD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebhookSample.API", "WebhookSample.API\WebhookSample.API.csproj", "{0E90C02C-0FD2-458A-929C-8C8BAE285CBD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebhookSample.Domain", "WebhookSample.Domain\WebhookSample.Domain.csproj", "{60440D91-8F38-4EDA-B13E-F7FE528F68B2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebhookSample.Domain", "WebhookSample.Domain\WebhookSample.Domain.csproj", "{60440D91-8F38-4EDA-B13E-F7FE528F68B2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebhookSample.Service", "WebhookSample.Service\WebhookSample.Service.csproj", "{B9295439-704B-4A56-BFD1-382705BEC097}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebhookSample.Service", "WebhookSample.Service\WebhookSample.Service.csproj", "{B9295439-704B-4A56-BFD1-382705BEC097}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebhookSample.Data", "WebhookSample.Data\WebhookSample.Data.csproj", "{60AFB239-496A-487F-9BE3-021D137EE72C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebhookSample.Data", "WebhookSample.Data\WebhookSample.Data.csproj", "{60AFB239-496A-487F-9BE3-021D137EE72C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebhookSample.Tests", "WebhookSample.Tests\WebhookSample.Tests.csproj", "{055B592A-0B2B-4EAA-B07E-208C5D91FC02}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{60AFB239-496A-487F-9BE3-021D137EE72C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{60AFB239-496A-487F-9BE3-021D137EE72C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{60AFB239-496A-487F-9BE3-021D137EE72C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{055B592A-0B2B-4EAA-B07E-208C5D91FC02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{055B592A-0B2B-4EAA-B07E-208C5D91FC02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{055B592A-0B2B-4EAA-B07E-208C5D91FC02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{055B592A-0B2B-4EAA-B07E-208C5D91FC02}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -28,7 +28,7 @@ namespace WebhookSample.API.Controllers
         public async Task<IActionResult> Get()
         {
             var clients = await _clientService.GetAllClients();
-            if (clients.Any())
+            if (clients is not null && clients.Any())
                 return Ok(clients);
 
             return NoContent();
