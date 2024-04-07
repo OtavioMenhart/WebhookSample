@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Newtonsoft.Json;
 using System.Net;
 using WebhookSample.Domain.Responses;
 
@@ -8,6 +9,13 @@ namespace WebhookSample.API.Filters
 {
     public class GlobalExceptionFilters : IExceptionFilter
     {
+        private readonly ILogger<GlobalExceptionFilters> _logger;
+
+        public GlobalExceptionFilters(ILogger<GlobalExceptionFilters> logger)
+        {
+            _logger = logger;
+        }
+
         public void OnException(ExceptionContext context)
         {
             if (!context.ExceptionHandled)
@@ -45,8 +53,8 @@ namespace WebhookSample.API.Filters
                         break;
                 }
                 response.AddErrorResponse(statusCode, new List<object> { message });
-                // _logger.LogError($"GlobalExceptionFilter: Error in {context.ActionDescriptor.DisplayName}. {exception.Message}. Stack Trace: {exception.StackTrace}");
-                // Custom Exception message to be returned to the UI
+                _logger.LogError(exception, JsonConvert.SerializeObject(response));
+
                 context.Result = new ObjectResult(response) { StatusCode = response.StatusCode };
             }
         }

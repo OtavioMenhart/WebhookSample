@@ -2,6 +2,8 @@
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Refit;
+using Serilog;
+using Serilog.Events;
 using WebhookSample.API.Consumer;
 using WebhookSample.Data.Context;
 using WebhookSample.Data.Repositories;
@@ -64,6 +66,15 @@ namespace WebhookSample.API.Extensions
                     });
                 });
 
+            });
+        }
+
+        public static void ConfigureLog(this IHostBuilder host)
+        {
+            host.UseSerilog((context, configLog) =>
+            {
+                configLog.WriteTo.Console(LogEventLevel.Warning, outputTemplate: "[{CorrelationId} - {Timestamp:HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}");
+                configLog.Enrich.WithCorrelationId();
             });
         }
     }

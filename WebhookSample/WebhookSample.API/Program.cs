@@ -19,6 +19,9 @@ builder.Services.AddSwaggerGen(opt =>
 builder.Services.ConfigureServices();
 builder.Services.ConfigureRepositories(builder.Configuration);
 builder.Services.ConfigureRabbit(builder.Configuration);
+builder.Host.ConfigureLog();
+
+builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 
