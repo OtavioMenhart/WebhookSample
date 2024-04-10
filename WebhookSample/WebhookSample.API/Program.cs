@@ -1,3 +1,4 @@
+using Microsoft.OpenApi.Models;
 using System.Reflection;
 using WebhookSample.API.Extensions;
 using WebhookSample.API.Filters;
@@ -11,9 +12,16 @@ builder.Services.AddControllers(opt => opt.Filters.Add(typeof(GlobalExceptionFil
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(opt =>
 {
-    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-    opt.IncludeXmlComments(xmlPath);
+    foreach (string filePath in
+             Directory.GetFiles(
+                 Path.Combine(
+                     Path.GetDirectoryName(
+                         Assembly.GetExecutingAssembly().Location) ?? string.Empty), "*.xml"))
+    {
+        opt.IncludeXmlComments(filePath);
+    }
+
+    opt.MapType<DateOnly>(() => new OpenApiSchema { Type = "string", Format = "date" });
 });
 
 builder.Services.ConfigureServices();

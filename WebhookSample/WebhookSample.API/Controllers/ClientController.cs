@@ -52,14 +52,6 @@ namespace WebhookSample.API.Controllers
         /// <summary>
         /// Create a new client
         /// </summary>
-        /// <remarks>
-        /// Example: 
-        /// {
-        ///   "name": "Client Name",
-        ///   "birthDate": "yyyy-MM-dd",
-        ///   "email": "clientEmail@gmail.com"
-        /// }
-        /// </remarks>
         /// <param name="newclient">New client information</param>
         /// <returns>New client added</returns>
         [HttpPost]
