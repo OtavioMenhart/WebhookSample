@@ -30,7 +30,7 @@ namespace WebhookSample.Domain.Entities
         [MaxLength(10)]
         public string Status { get; private set; } = "ACTIVE";
 
-        private ClientHistory()
+        public ClientHistory()
         {
         }
 

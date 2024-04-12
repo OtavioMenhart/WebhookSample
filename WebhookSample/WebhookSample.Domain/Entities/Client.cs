@@ -27,6 +27,19 @@ namespace WebhookSample.Domain.Entities
         [JsonIgnore]
         public ICollection<ClientHistory> Histories { get; set; }
 
+        private Client()
+        {
+        }
+
+        public Client(string name, DateOnly birthDate, string email, bool status, List<ClientHistory> histories)
+        {
+            Name = name;
+            BirthDate = birthDate;
+            Email = email;
+            Status = status ? "ACTIVE" : "INACTIVE";
+            Histories = histories;
+        }
+
         public void AddHistory(Client clientToAddHistory, EventName eventName)
         {
             Histories = new List<ClientHistory>

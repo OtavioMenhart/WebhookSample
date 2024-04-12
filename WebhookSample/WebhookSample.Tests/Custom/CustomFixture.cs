@@ -9,6 +9,8 @@ namespace WebhookSample.Tests.Custom
         {
             var fixture = new Fixture();
             fixture.Customize<DateOnly>(composer => composer.FromFactory<DateTime>(DateOnly.FromDateTime));
+            fixture.Behaviors.Remove(fixture.Behaviors.OfType<ThrowingRecursionBehavior>().FirstOrDefault());
+            fixture.Behaviors.Add(new OmitOnRecursionBehavior());
             return fixture;
         }
     }
