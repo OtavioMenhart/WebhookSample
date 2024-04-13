@@ -27,7 +27,7 @@ namespace WebhookSample.Domain.Entities
         [JsonIgnore]
         public ICollection<ClientHistory> Histories { get; set; }
 
-        private Client()
+        public Client()
         {
         }
 
