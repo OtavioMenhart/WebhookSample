@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Refit;
 using Serilog;
 using Serilog.Events;
+using System.Diagnostics.CodeAnalysis;
 using WebhookSample.API.Consumer;
 using WebhookSample.Data.Context;
 using WebhookSample.Data.Repositories;
@@ -15,6 +16,7 @@ using WebhookSample.Service.Validators;
 
 namespace WebhookSample.API.Extensions
 {
+    [ExcludeFromCodeCoverage]
     public static class DependencyInjection
     {
         public static void ConfigureServices(this IServiceCollection services)

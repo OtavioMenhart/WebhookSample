@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
+using System.Diagnostics.CodeAnalysis;
 using WebhookSample.Domain.Entities;
 using WebhookSample.Domain.Requests.Clients;
 using WebhookSample.Domain.Responses.Clients;
 
 namespace WebhookSample.API.Extensions
 {
+    [ExcludeFromCodeCoverage]
     public class Mappers : Profile
     {
         public Mappers()
